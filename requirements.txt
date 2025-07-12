@@ -1,0 +1,10 @@
+python-dotenv
+fastapi
+uvicorn
+psycopg2-binary  # This is for connecting Python to PostgreSQL
+dbt-core
+dbt-postgres
+telethon # For Telegram scraping
+ultralytics # For YOLOv8
+dagster
+dagster-webserver# Python dependencies
