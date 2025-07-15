@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: telegram_data_db
+    schema: public # Schema where raw data will land ( from scraper)
+
+    tables:
+      - name: telegram_messages # This will be the table where the scraper puts data

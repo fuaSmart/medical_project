@@ -1,0 +1,47 @@
+name: Data Pipeline CI
+
+on:
+  push:
+    branches:
+      - main 
+  pull_request:
+    branches:
+      - main 
+
+jobs:
+  build_and_test_dbt:
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4 
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9' 
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt # Assuming you have a requirements.txt
+        pip install dbt-postgres psycopg2-binary python-dotenv telethon # Ensure all project dependencies are installed
+
+    - name: Set up Docker Compose (for PostgreSQL)
+      run: |
+        docker compose -f docker/docker-compose.yml up -d # Start your database container
+
+    - name: Wait for PostgreSQL to be ready
+
+      run: |
+        echo "Waiting for PostgreSQL to start..."
+        sleep 15 # Adjust as needed based on your DB startup time
+        echo "PostgreSQL should be ready."
+
+    - name: Run DBT transformations
+      working-directory: ./src/dbt_project 
+      run: dbt run 
+
+    - name: Run DBT tests
+      working-directory: ./src/dbt_project 
+      run: dbt test 

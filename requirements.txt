@@ -1,10 +1,14 @@
 python-dotenv
 fastapi
 uvicorn
-psycopg2-binary  # This is for connecting Python to PostgreSQL
+psycopg2-binary
 dbt-core
 dbt-postgres
-telethon # For Telegram scraping
-ultralytics # For YOLOv8
+telethon
+# Install CPU-only PyTorch and related libraries first
+torch --index-url https://download.pytorch.org/whl/cpu
+torchvision --index-url https://download.pytorch.org/whl/cpu
+torchaudio --index-url https://download.pytorch.org/whl/cpu
+ultralytics
 dagster
-dagster-webserver# Python dependencies
+dagster-webserver

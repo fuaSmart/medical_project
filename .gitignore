@@ -1,3 +1,32 @@
-*.pyc
+# Python
 __pycache__/
+*.pyc
+*.pyd
+*.pyo
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-arg.txt
+.tox/
+.nox/
+.pytest_cache/
+*.egg-info/
+.coverage
+.mypy_cache/
+.vscode/ # VS Code settings, if you use it
+
+# Envt Variables
 .env
+
+# Data Lake 
+data/raw/telegram_media/
+
+src/dbt_project/target/
+src/dbt_project/dbt_packages/ 
+src/dbt_project/logs/
+
+*.sqlite3
+*.db
+
