@@ -1,16 +1,18 @@
 -- models/staging/stg_telegrammessages.sql
 
 SELECT
-    id AS message_id,
-    chat_id,
-    sender_id,
-    message_date AS message_timestamp,
+    message_id,
+    channel_id,
+    channel_username,
     message_text,
-    views AS message_views,
-    forwards AS message_forwards,
-    replies_count AS message_replies_count,
-    CASE WHEN media_type = 'photo' THEN TRUE ELSE FALSE END AS has_media_photo,
-    CASE WHEN media_type = 'video' THEN TRUE ELSE FALSE END AS has_media_video,
-    _extracted_at AS extracted_at,
-    _file AS source_file_name
-FROM {{ source('raw_data', 'telegram_messages') }} 
+    message_date,
+    sender_id,
+    sender_username,
+    views_count,
+    forwards_count,
+    replies_count, 
+    reactions_count, 
+    link,
+    media_data, 
+    scraped_at
+FROM {{ source('telegram', 'raw_telegram_messages') }}

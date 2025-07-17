@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: telegram 
+    database: "{{ env_var('DB_NAME') }}" 
+    schema: public 
+
+    tables:
+      - name: raw_telegram_messages 
+        description: "Raw messages scraped from Telegram channels."
+        columns: 
+          - name: id
+            description: "Primary key of the raw message record."
+          - name: message_id
+            description: "Unique ID of the message within Telegram."
+          - name: channel_id
+            description: "Unique ID of the Telegram channel."
+          - name: channel_username
+            description: "Username of the Telegram channel."
+          - name: message_text
+            description: "Content of the message."
+          - name: message_date
+            description: "Timestamp when the message was sent."
+          - name: sender_id
+            description: "ID of the message sender."
+          - name: sender_username
+            description: "Username of the message sender."
+          - name: views_count
+            description: "Number of views for the message."
+          - name: forwards_count
+            description: "Number of forwards for the message."
+          - name: replies_count
+            description: "JSONB field for replies count."
+          - name: reactions_count
+            description: "JSONB field for reactions count."
+          - name: link
+            description: "Link to the message."
+          - name: media_data
+            description: "JSONB field for media information."
+          - name: scraped_at
+            description: "Timestamp when the message was scraped into the database."
+
+models:
+  - name: stg_telegrammessages
+    description: "Staging model for Telegram messages, cleaning raw data."
+    columns:
+      - name: message_id
+        description: "Unique identifier for the message."
+        tests:
+          - unique
+          - not_null

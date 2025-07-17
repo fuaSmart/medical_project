@@ -1,0 +1,64 @@
+version: 2
+
+sources:
+  - name: telegram 
+    database: "{{ env_var('DB_NAME') }}"
+    schema: public
+
+    tables:
+      - name: raw_telegram_messages 
+        description: "Raw messages scraped from Telegram channels."
+        columns:
+          - name: id
+            description: "Primary key of the raw message record."
+          - name: message_id
+            description: "Unique ID of the message within Telegram."
+
+          - name: local_media_path
+            description: "Local file path to downloaded media (if any)."
+
+      - name: raw_image_detections 
+        description: "Raw object detection results from YOLOv8 on Telegram images."
+        columns:
+          - name: id
+            description: "Primary key of the raw detection record."
+          - name: message_id
+            description: "Foreign key to raw_telegram_messages.message_id."
+          - name: image_path
+            description: "Local file path of the image processed."
+          - name: detected_objects
+            description: "JSONB array of detected objects (class, confidence, bbox)."
+          - name: detection_timestamp
+            description: "Timestamp when detection was performed."
+
+models:
+  - name: stg_telegrammessages
+    description: "Staging model for Telegram messages, cleaning raw data."
+    columns:
+      - name: message_id
+        description: "Unique identifier for the message."
+        tests:
+          - unique
+          - not_null
+      # Add other column descriptions and tests as you develop
+
+  # Add a new model definition for fct_image_detections below
+  - name: fct_image_detections # <<< ADD THIS NEW MODEL DEFINITION <<<
+    description: "Fact table for YOLO image detection results, linked to messages."
+    columns:
+      - name: detection_id
+        description: "Unique identifier for the detection record."
+        tests:
+          - unique
+          - not_null
+      - name: message_id
+        description: "Foreign key to fct_messages."
+        tests:
+          - not_null
+      - name: detected_object_class
+        description: "Name of the detected object class (e.g., 'person', 'car')."
+        tests:
+          - not_null
+      - name: confidence_score
+        description: "Confidence score of the detection."
+          
